@@ -46,8 +46,8 @@ But yeah, there's a drawback since the original 3xAA battery leads to ridiculous
 In fact, the music player with its 3w audio amplifier requires a 5V 2A power supply to work correctly.
 
 Ressources:
-- [user manual](/Delorean%20RF%20Player%20-%20user%20manual%20-%20v1.pdf)
-- [code](/tobecommited)
+- [user manual](/docs/Delorean%20RF%20Player%20-%20user%20manual%20-%20v1.pdf)
+- [code](/code/tobecommited)
 
 
 # About dkMOD
