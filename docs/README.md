@@ -47,7 +47,7 @@ In fact, the music player with its 3w audio amplifier requires a 5V 2A power sup
 
 Ressources:
 - [user manual](/docs/Delorean%20RF%20Player%20-%20user%20manual%20-%20v1.pdf)
-- [code](/code/tobecommited)
+- [code source](/code/tobecommited)
 
 
 # About dkMOD
