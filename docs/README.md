@@ -27,6 +27,7 @@ Some optional extras may be added such as:
 - Adding a command to control the 6 buttons in a row
 - Adding a sequencer
 
+
 ### Delorean RF Player
 
 This board is an extension to the RF Controller that integrates a MP3 player.
@@ -43,6 +44,11 @@ Being so enthousiastic about embedding music player in the model, a bunch of fun
 This board is like the ultimate one !
 But yeah, there's a drawback since the original 3xAA battery leads to ridiculous autonomy.
 In fact, the music player with its 3w audio amplifier requires a 5V 2A power supply to work correctly.
+
+Ressources:
+- [user manual](/Delorean%20RF%20Player%20-%20user%20manual%20-%20v1.pdf)
+- [code](/tobecommited)
+
 
 # About dkMOD
 We are BTTF fan and technology enthousiast and mixing those two passions has been really great.
