@@ -45,5 +45,7 @@ In fact, the music player with its 3w audio amplifier requires a 5V 2A power sup
 # About dkMOD
 We are BTTF fan and technology enthousiast and mixing those two passions has been really great.
 Hopefully we will find the time to work on such projects.
-For any information or any personnal request, fill free to contact us at dkmod@techie.com
+For any information or any personnal request, fill free to contact us !
+
+Contact: dkmod@techie.com
 
