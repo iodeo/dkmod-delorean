@@ -1,4 +1,5 @@
 theme: jekyll-theme-minimal
 title: Delorean Extension Boards by dkMOD
-description: User manuals and Source code
-logo: images/logo.png
+description: User manuals, Source code and other ressources
+logo: /images/logo.png
+show_downloads: true
