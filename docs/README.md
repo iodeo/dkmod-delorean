@@ -1,4 +1,4 @@
-# The Minimal theme
+# Delorean Mods on Electronic devices control
 
 [![Build Status](https://travis-ci.org/pages-themes/minimal.svg?branch=master)](https://travis-ci.org/pages-themes/minimal) [![Gem Version](https://badge.fury.io/rb/jekyll-theme-minimal.svg)](https://badge.fury.io/rb/jekyll-theme-minimal)
 
@@ -6,20 +6,20 @@
 
 ![Thumbnail of minimal](thumbnail.png)
 
-## Usage
+## Our principles in Extension boards design
 
-To use the Minimal theme:
+Our extension boards are designed to respect the following rules:
 
-1. Add the following to your site's `_config.yml`:
+1. Fit in existing model perfectly
 
-    ```yml
-    theme: jekyll-theme-minimal
-    ```
+2. Be plug and play
 
-2. Optionally, if you'd like to preview your site on your computer, add the following to your site's `Gemfile`:
+3. Be end-user friendly (not only for programmer)
 
-    ```ruby
-    gem "github-pages", group: :jekyll_plugins
+4. Be open source / customisable
+
+    ```javascript
+    if (!user.isProgrammer) matter = false;
     ```
 
 
