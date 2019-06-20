@@ -38,11 +38,12 @@ Being so enthousiastic about embedding music player in the model, a bunch of fun
 6. Record / Play a sequence of commands timely on a music track
 7. Powering on/off all the devices
 
-This board is really the ultimate one !
-But yeah, there's a drawback as the original 3xAA battery leads to ridiculous autonomy.
+This board is like the ultimate one !
+But yeah, there's a drawback since the original 3xAA battery leads to ridiculous autonomy.
 In fact, the music player with its 3w audio amplifier requires a 5V 2A power supply to work correctly.
 
 # About dkMOD
-We are BTTF fan and technology enthousiast
-The idea of these boards was obvious, and hopefully we will find the time to continue such projects
+We are BTTF fan and technology enthousiast and mixing those two passions has been really great.
+Hopefully we will find the time to work on such projects.
+For any information or any personnal request, fill free to contact us at dkmod@techie.com
 
