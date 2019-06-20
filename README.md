@@ -1,4 +1,4 @@
 # dkmod-delorean
 
-Information can be found at this link 
-(henrio-net.github.io/dkmod-delorean)[henrio-net.github.io/dkmod-delorean]
+Information can be found here : 
+henrio-net.github.io/dkmod-delorean
