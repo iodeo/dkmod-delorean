@@ -45,7 +45,7 @@ This board is like the ultimate one !
 But yeah, there's a drawback: Since the original 3xAA battery leads to ridiculous autonomy, this extension board requires a 5V 2A minimum power supply to work correctly. This is mainly due to the onboard 3w audio amplifier.
 
 The picture hereafter shows how to connect the board to your model:
-![rfplayer wiring](docs/images/imgage3.png?raw=true)
+![rfplayer wiring](docs/images/image3.png?raw=true)
 
 Ressources:
 - [user manual](docs/Delorean%20RF%20Player%20-%20user%20manual%20-%20v1.pdf)
