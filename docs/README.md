@@ -44,8 +44,8 @@ Being so enthousiastic about embedding music player in the model, a bunch of fun
 This board is like the ultimate one !
 But yeah, there's a drawback: Since the original 3xAA battery leads to ridiculous autonomy, this extension board requires a 5V 2A minimum power supply to work correctly. This is mainly due to the onboard 3w audio amplifier.
 
-The picture hereafter shows how to connect the board to your model.
-![rfplayer wiring](/images/imgage3.png?raw=true "Delorean RF Player Wiring")
+The picture hereafter shows how to connect the board to your model:
+![rfplayer wiring](dkmod-delorean/docs/images/imgage3.png?raw=true)
 
 Ressources:
 - [user manual](dkmod-delorean/docs/Delorean%20RF%20Player%20-%20user%20manual%20-%20v1.pdf)
