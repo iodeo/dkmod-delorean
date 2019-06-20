@@ -42,17 +42,19 @@ Being so enthousiastic about embedding music player in the model, a bunch of fun
 7. Powering on/off all the devices
 
 This board is like the ultimate one !
-But yeah, there's a drawback since the original 3xAA battery leads to ridiculous autonomy.
-In fact, the music player with its 3w audio amplifier requires a 5V 2A power supply to work correctly.
+But yeah, there's a drawback: Since the original 3xAA battery leads to ridiculous autonomy, this extension board requires a 5V 2A minimum power supply to work correctly. This is mainly due to the onboard 3w audio amplifier.
+
+The picture hereafter shows how to connect the board to your model.
+![rfplayer wiring](/images/imgage3.png?raw=true "Delorean RF Player Wiring")
 
 Ressources:
-- [user manual](/docs/Delorean%20RF%20Player%20-%20user%20manual%20-%20v1.pdf)
-- [code source](/code/tobecommited)
+- [user manual](dkmod-delorean/docs/Delorean%20RF%20Player%20-%20user%20manual%20-%20v1.pdf)
+- [code source](dkmod-delorean/code/tobecommited)
 
 
 # About dkMOD
 We are BTTF fan and technology enthousiast and mixing those two passions has been really great.
-Hopefully we will find the time to work on such projects.
+Hopefully we will find the time to work again on such projects in the future.
 For any information or any personnal request, feel free to contact us !
 
 Contact: [dkmod@techie.com](mailto:dkmod@techie.com)
