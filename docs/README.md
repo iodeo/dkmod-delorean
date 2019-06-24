@@ -48,8 +48,8 @@ The picture hereafter shows how to connect the board to your model:
 ![rfplayer wiring](docs/images/image3.png?raw=true)
 
 Ressources:
-- [user manual](docs/Delorean%20RF%20Player%20-%20user%20manual%20-%20v1.pdf)
-- [code source](code/tobecommited)
+- [user manual](https://github.com/henrio-net/dkmod-delorean/raw/master/docs/Delorean%20RF%20Player%20-%20user%20manual%20-%20v1.pdf)
+- [code source](code/HOLD)
 
 
 # About dkMOD
