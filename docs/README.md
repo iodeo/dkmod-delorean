@@ -45,9 +45,9 @@ This board is like the ultimate one !
 But yeah, there's a drawback: Since the original 3xAA battery leads to ridiculous autonomy, this extension board requires a 5V 2A minimum power supply to work correctly. This is mainly due to the onboard 3w audio amplifier.
 
 Ressources:
-- [user manual ENG](https://github.com/henrio-net/dkmod-delorean/raw/master/docs/Delorean%20RF%20Player%20-%20user%20manual%20v1.pdf)
-- [user manual FR](https://github.com/henrio-net/dkmod-delorean/raw/master/docs/Delorean%20RF%20Player%20-%20manuel%20utilisateur%20v1.pdf)
-- [code source](code/HOLD)
+- [user manual ENG](https://github.com/henrio-net/dkmod-delorean/blob/master/docs/Delorean%20RF%20Player%20-%20user%20manual%20v1.pdf)
+- [user manual FR](https://github.com/henrio-net/dkmod-delorean/blob/master/docs/Delorean%20RF%20Player%20-%20manuel%20utilisateur%20v1.pdf)
+- [code source](https://github.com/henrio-net/dkmod-delorean/blob/master/code)
 
 
 # About dkMOD
