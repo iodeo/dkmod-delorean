@@ -46,8 +46,8 @@ But yeah, there's a drawback: Since the original 3xAA battery leads to ridiculou
 
 Ressources:
 - [user manual ENG](https://github.com/henrio-net/dkmod-delorean/blob/master/docs/Delorean%20RF%20player%20-%20user%20manual%20v1.pdf)
-- [user manual FR]("https://github.com/henrio-net/dkmod-delorean/blob/master/docs/Delorean%20RF%20Player%20-%20manuel%20utilisateur%20v1.pdf")
-- [code source]("https://github.com/henrio-net/dkmod-delorean/blob/master/code")
+- [user manual FR](https://github.com/henrio-net/dkmod-delorean/blob/master/docs/Delorean%20RF%20Player%20-%20manuel%20utilisateur%20v1.pdf)
+- [code source](https://github.com/henrio-net/dkmod-delorean/blob/master/code)
 
 
 # About dkMOD
