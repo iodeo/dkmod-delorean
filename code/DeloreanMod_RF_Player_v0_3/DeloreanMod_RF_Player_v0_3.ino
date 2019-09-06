@@ -1,3 +1,7 @@
+// Delorean RF Player - Full Version 0.3
+// Written by dkMOD
+// Released under GNU v3 license.
+
 #include <EEPROM.h>
 #include <RCSwitch.h>
 #include "Arduino.h"
@@ -225,29 +229,6 @@ void loop() {
           blinkLed(1,5);
         }
       }
-      /*
-      // OPTIONNAL RF BUTTON 7 AND 8
-
-      // PRINT EEPROM
-      if (rfCommand.code == rfParam.code[6]) {
-        #ifdef DEBUG
-          Serial.print(F("Short push on rf_button 7"));
-        #endif
-        printEEPROM();
-      }
-
-      // PLAY ALL ADVERTISE
-      if (rfCommand.code == rfParam.code[6]) {
-        #ifdef DEBUG
-          Serial.println(F("Short push on rf_button 8"));
-        #endif
-        for (unsigned int i = 0; i < advertsNumber; i++) {
-          Serial.print("Playing adv number "); Serial.println(i+1);
-          myDFPlayer.advertise(i+1);
-          delay(5000);
-        }
-      }
-      */
       
       // shutdown after track
       dfStopAfterTrack = false;
@@ -330,30 +311,16 @@ void loop() {
               dfStop = false;
               dfPlay = true;
               delay(100);
-              //checkTrackNumber();
             }
             blinkLed(2,5);
             dfStopAfterTrack = false; 
           }
-
-          /* PREVIOUS TRACK (LOOP)
-          if (rfCommand.code == rfParam.code[2]) {
-            #ifdef DEBUG
-              Serial.println(F("Long push on rf_button 3 detected : PREVIOUS TRACK (LOOP)"));
-            #endif
-            //checkTrackNumber();
-            (((track+=tracksNumber)-=2)%=tracksNumber)++;
-            myDFPlayer.playMp3Folder(track);
-            blinkLed(2,5);
-            dfStopAfterTrack = false;
-          }*/
 
           // NEXT TRACK (LOOP)
           if (rfCommand.code == rfParam.code[1]) {
             #ifdef DEBUG
               Serial.println(F("Long push on rf_button 2 detected : NEXT TRACK (LOOP)"));
             #endif
-            //checkTrackNumber();
             (track%=tracksNumber)++;
             myDFPlayer.playMp3Folder(track);
             blinkLed(2,5);
@@ -393,7 +360,6 @@ void loop() {
             #ifdef DEBUG
               Serial.println(F("Long push on rf_button 4 detected : ADVERTISE"));
             #endif
-            //checkTrackNumber();
             if (advertsNumber != 0) {
               if (dfPlay) {
                 #ifdef DEBUG
@@ -436,17 +402,6 @@ void loop() {
             }
           }
 
-              
-          /* EQUALIZER
-          if (rfCommand.code == rfParam.code[6]) {
-            #ifdef DEBUG
-              Serial.println(F("Long push on rf_button 4 detected : EQUALIZER CHANGE"));
-            #endif
-            dfEqualizer=(dfEqualizer+1)%6;
-            myDFPlayer.EQ(dfEqualizer);
-            EEPROM.put(EE_ADDR_EQUALIZER, dfEqualizer);
-            blinkLed(dfEqualizer+1,5);
-          }*/
         }
                   
         else { // No dfplayer connected ..
@@ -482,7 +437,6 @@ void loop() {
         }
         else {
           if (myDFPlayer.read() == track + advertsNumber) { //avoid redondancy at end of track
-            //checkTrackNumber();
             if (track==tracksNumber) {
               #ifdef DEBUG
                 Serial.println(F("End of playlist > Stop playing"));
@@ -763,49 +717,6 @@ bool connectDFPlayer() {
     return false;
   }
 }
-
-/* resolu
- * void checkTrackNumber() {
-  if (advertsNumber > 3000 || tracksNumber > 3000) {
-    if (dfPlay) {
-      advertsNumber = myDFPlayer.readCurrentFileNumber() - track;
-      delay(100);
-      tracksNumber = myDFPlayer.readFileCounts() - advertsNumber;
-      delay(100);
-      //advertsNumber--; // due to silence sound file
-    }
-    if (dfStop) {
-      //-- Get number of files advertisements and tracks
-      myDFPlayer.outputDevice(DFPLAYER_DEVICE_SD);
-      delay(100);
-      myDFPlayer.outputSetting(true, 0);
-      delay(100);
-      myDFPlayer.volume(0);
-      delay(100);
-      myDFPlayer.playMp3Folder(1);
-      delay(100);
-      myDFPlayer.pause();
-      delay(100);
-      advertsNumber = myDFPlayer.readCurrentFileNumber() - 1;
-      delay(100);
-      tracksNumber = myDFPlayer.readFileCounts() - advertsNumber;
-      delay(100);
-      //-- Set params
-      myDFPlayer.outputSetting(true, dfVolume);
-      delay(100);
-      myDFPlayer.volume(dfVolume);
-      delay(100);
-      myDFPlayer.EQ(dfEqualizer);
-      delay(100);
-    }   
-    #ifdef DEBUG
-      Serial.println(F("Rectification of Tracks number"));
-      Serial.print(F(" - Number of tracks: ")); Serial.println(tracksNumber);
-      Serial.print(F(" - Number of advertisements: ")); Serial.println(advertsNumber);
-    #endif
-  }
-}*/
-
 
 // -- SEQUENCE RECORDER
 void recordSequence(byte ADDR, unsigned int track) {
