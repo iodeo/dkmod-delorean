@@ -24,8 +24,8 @@
 #define DF_READ_MAX_COUNT 25 // Max tentatives to get tracks number
 
 // Parameters for RF Remote Control
-#define LONG_PRESS_DELAY 250 // Threshold between count
-#define LONG_PRESS_COUNT 4 // Threshold between  Short and Long push
+#define LONG_PRESS_DELAY 150 // Threshold between count
+#define LONG_PRESS_COUNT 6 // Threshold between  Short and Long push
 #define PARAM_RF_TIMEOUT 10000 // TimeOut for RF code detection (waiting for rf button push)
 #define N_RF_BUTTONS 6 // Number of buttons on remote control
 
