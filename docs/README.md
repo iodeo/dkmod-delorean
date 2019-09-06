@@ -42,7 +42,7 @@ Being so enthousiastic about embedding music player in the model, a bunch of fun
 7. Powering on/off all the devices
 
 This board is like the ultimate one !
-But yeah, there's a drawback: Since the original 3xAA battery leads to ridiculous autonomy, this extension board requires a 5V 2A minimum power supply to work correctly. This is mainly due to the onboard 3w audio amplifier.
+But yeah, there's a drawback: Since the original 3xAA battery leads to ridiculous autonomy, this extension board requires a well regulated 5V 2A minimum power supply to work correctly. This is mainly due to the onboard 3w audio amplifier. A cheap and reliable option is to use a 12V 2A power supply regulated to 5V using a buck DC-DC converter.
 
 Ressources:
 - [user manual ENG](https://github.com/henrio-net/dkmod-delorean/blob/master/docs/Delorean%20RF%20Player%20-%20User%20Manual%20v1.pdf)
