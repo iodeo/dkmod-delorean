@@ -47,7 +47,7 @@ But yeah, there's a drawback: Since the original 3xAA battery leads to ridiculou
 Ressources:
 - [user manual ENG](https://github.com/henrio-net/dkmod-delorean/blob/master/docs/Delorean%20RF%20Player%20-%20User%20Manual%20v1.pdf)
 - [manuel utilisateur FR](https://github.com/henrio-net/dkmod-delorean/blob/master/docs/Delorean%20RF%20Player%20-%20Manuel%20Utilisateur%20v1.pdf)
-- [guide pour Mac OS](https://github.com/henrio-net/dkmod-delorean/raw/master/docs/CarteSD-sous-MacOS.pdf)
+- [guide pour Mac OS](https://github.com/henrio-net/dkmod-delorean/blob/master/docs/CarteSD-sous-MacOS.pdf)
 - [code source](https://github.com/henrio-net/dkmod-delorean/blob/master/code)
 
 
