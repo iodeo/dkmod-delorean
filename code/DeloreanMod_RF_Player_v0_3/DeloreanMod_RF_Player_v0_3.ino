@@ -74,7 +74,7 @@ unsigned int track = 1;
 
 // Declaration for EaglemossPCB
 const byte buttonPin[] = {EA_BP1,EA_BP2,EA_BP3,EA_BP4,EA_BP5,EA_BP6}; // write pin-out in an array for use in loops
-bool powerOn = true;
+bool powerOn = false;
 
 // Other
 unsigned long timer;
