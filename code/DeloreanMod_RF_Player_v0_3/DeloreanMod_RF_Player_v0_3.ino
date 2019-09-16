@@ -11,7 +11,7 @@
 #include "DFRobotDFPlayerMini.h"
 
 // Uncomment to enable debug on serial port
-#define DEBUG 1
+//#define DEBUG 1
 
 // eaglemoss PCB
 #define EA_BP1 8 // pin to button1(R)
