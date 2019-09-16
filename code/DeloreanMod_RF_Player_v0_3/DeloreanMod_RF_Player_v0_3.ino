@@ -486,9 +486,17 @@ void loop() {
           #endif
           powerOn = turnPowerOff();
           dfStopAfterTrack = false;
+          // avoid redundant play finish message
+          while (myDFPlayer.available()) {
+            #ifdef DEBUG
+              Serial.println(F(" Ignore DFPlayer available"));
+            #endif
+            myDFPlayer.readType();
+            delay(100);
+          }
         }
         else { // continue playing
-          if (myDFPlayer.read() == track + advertsNumber || forceNext) { //avoid redondancy at end of track
+          if (myDFPlayer.read() == track + advertsNumber || forceNext) { //avoid redundant next at end of track
             //checkTrackNumber();
             if (track==tracksNumber) {
               #ifdef DEBUG
