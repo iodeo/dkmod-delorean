@@ -11,7 +11,7 @@
 #include "DFRobotDFPlayerMini.h"
 
 // Uncomment to enable debug on serial port
-//#define DEBUG 1
+#define DEBUG 1
 
 // eaglemoss PCB
 #define EA_BP1 8 // pin to button1(R)
@@ -66,7 +66,6 @@ DFRobotDFPlayerMini myDFPlayer;
 byte dfVolume;
 byte dfEqualizer;
 bool dfPlay = true;
-bool dfStop = false;
 bool dfConnected = false;
 bool dfStopAfterTrack = false; // Used to cut music at end of track
 unsigned int advertsNumber = 0;
@@ -268,13 +267,12 @@ void loop() {
           Serial.println(F("Long push on rf_button 6 detected : POWER ON/OFF"));
         #endif
         track = 1;
-        if (powerOn || !dfStop) powerOn = turnPowerOff();
+        if (powerOn || dfPlay) powerOn = turnPowerOff();
         else {
           powerOn = turnPowerOn();
           if (dfConnected) {
             myDFPlayer.playMp3Folder(track);
             dfPlay = true;
-            dfStop = false;
           }
           pushAllButtons();
         }
@@ -318,25 +316,22 @@ void loop() {
             #ifdef DEBUG
               Serial.println(F("Long push on rf_button 1 detected : PLAY/PAUSE MUSIC"));
             #endif
-            if (!dfStop) {
-              /* play / pause
-              (dfPlay)?myDFPlayer.pause():myDFPlayer.start();
-              dfPlay=!dfPlay; */
-              // play/stop
+            if (dfPlay) {
+              #ifdef DEBUG
+                Serial.println(F(" > Stop music"));
+              #endif
               myDFPlayer.stop();
-              dfPlay = false;
-              dfStop = true;
-            }
-            else { // if dfP sleeps, wake it up
-              myDFPlayer.outputDevice(DFPLAYER_DEVICE_SD);
-              myDFPlayer.outputSetting(true, dfVolume);
-              myDFPlayer.EQ(dfEqualizer);
-              myDFPlayer.volume(dfVolume);
-              myDFPlayer.playMp3Folder(track);
-              dfStop = false;
-              dfPlay = true;
               delay(100);
-              //checkTrackNumber();
+              track = 1;
+              dfPlay = false;
+            }
+            else {
+              #ifdef DEBUG
+                Serial.println(F(" > Start music"));
+              #endif
+              myDFPlayer.playMp3Folder(track);
+              delay(100);
+              dfPlay = true;
             }
             blinkLed(2,5);
             dfStopAfterTrack = false; 
@@ -441,18 +436,6 @@ void loop() {
               dfStopAfterTrack = false;
             }
           }
-
-              
-          /* EQUALIZER
-          if (rfCommand.code == rfParam.code[6]) {
-            #ifdef DEBUG
-              Serial.println(F("Long push on rf_button 4 detected : EQUALIZER CHANGE"));
-            #endif
-            dfEqualizer=(dfEqualizer+1)%6;
-            myDFPlayer.EQ(dfEqualizer);
-            EEPROM.put(EE_ADDR_EQUALIZER, dfEqualizer);
-            blinkLed(dfEqualizer+1,5);
-          }*/
         }
                   
         else { // No dfplayer connected ..
@@ -477,11 +460,12 @@ void loop() {
       bool forceNext = false;
       if (myDFPlayer.readType() == WrongStack) {
         // Serial com wrong > Check player status 
+        delay(100);
         if (dfPlay) {
           int tmp = -1;
           while (tmp == -1) {
-            delay(100);
             tmp = myDFPlayer.readState();
+            delay(100);
             #ifdef DEBUG
               Serial.print(F("Stack Wrong > Read state ="));
               Serial.println(tmp);
@@ -540,33 +524,34 @@ void loop() {
   
 }
 
-
 //------ FUNCTIONS
 
 //-- POWER INTERFACE
 
 bool turnPowerOn() {
+  #ifdef DEBUG
+    Serial.println(F("call turnPowerOn"));
+  #endif
   // powering eaglemoss pcb
   digitalWrite(EA_POWER,HIGH);
-  // restart music
-  if (dfConnected && dfStop) {
-    myDFPlayer.outputDevice(DFPLAYER_DEVICE_SD);
-    myDFPlayer.outputSetting(true, dfVolume);
-    myDFPlayer.EQ(dfEqualizer);
-    dfStop = false;
-  }
   return true;
 }
 
 bool turnPowerOff() {
+  #ifdef DEBUG
+    Serial.println(F("call turnPowerOff"));
+  #endif
   // unpowering eaglemoss pcb
   digitalWrite(EA_POWER,LOW);
   //comment below to disable eaglemoss pcb when poweroff
   delay(50); digitalWrite(EA_POWER,HIGH);
   // stop music
-  if (dfConnected) myDFPlayer.stop();
-  dfPlay = false;
-  dfStop = true;
+  if (dfPlay) {
+    myDFPlayer.stop();
+    delay(100);
+    track = 1;
+    dfPlay = false;
+  }
   return false;
 }
 
@@ -784,7 +769,6 @@ bool connectDFPlayer() {
     myDFPlayer.EQ(dfEqualizer);
     delay(100);
     dfPlay = false;
-    dfStop = true;
     return true;
   }
   else {
@@ -795,49 +779,6 @@ bool connectDFPlayer() {
     return false;
   }
 }
-
-/* resolu
- * void checkTrackNumber() {
-  if (advertsNumber > 3000 || tracksNumber > 3000) {
-    if (dfPlay) {
-      advertsNumber = myDFPlayer.readCurrentFileNumber() - track;
-      delay(100);
-      tracksNumber = myDFPlayer.readFileCounts() - advertsNumber;
-      delay(100);
-      //advertsNumber--; // due to silence sound file
-    }
-    if (dfStop) {
-      //-- Get number of files advertisements and tracks
-      myDFPlayer.outputDevice(DFPLAYER_DEVICE_SD);
-      delay(100);
-      myDFPlayer.outputSetting(true, 0);
-      delay(100);
-      myDFPlayer.volume(0);
-      delay(100);
-      myDFPlayer.playMp3Folder(1);
-      delay(100);
-      myDFPlayer.pause();
-      delay(100);
-      advertsNumber = myDFPlayer.readCurrentFileNumber() - 1;
-      delay(100);
-      tracksNumber = myDFPlayer.readFileCounts() - advertsNumber;
-      delay(100);
-      //-- Set params
-      myDFPlayer.outputSetting(true, dfVolume);
-      delay(100);
-      myDFPlayer.volume(dfVolume);
-      delay(100);
-      myDFPlayer.EQ(dfEqualizer);
-      delay(100);
-    }   
-    #ifdef DEBUG
-      Serial.println(F("Rectification of Tracks number"));
-      Serial.print(F(" - Number of tracks: ")); Serial.println(tracksNumber);
-      Serial.print(F(" - Number of advertisements: ")); Serial.println(advertsNumber);
-    #endif
-  }
-}*/
-
 
 // -- SEQUENCE RECORDER
 void recordSequence(byte ADDR, unsigned int track) {
@@ -930,9 +871,9 @@ bool playSequence(byte ADDR) {
   // start music
   if (dfConnected && track!=0) {
     dfPlay = true;
-    dfStop = false;
     myDFPlayer.playMp3Folder(track);
   }
+  if (track == 0) track = 1; // keeping 0 lead to future error
 
   // play the sequence
   refTime = millis();
@@ -955,7 +896,7 @@ bool playSequence(byte ADDR) {
     Serial.println(F("END OF SEQUENCE"));
   #endif
 
-  return dfConnected;
+  return dfPlay;
   
 }
 
