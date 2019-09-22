@@ -33,21 +33,20 @@
 #define LONG_PRESS_DELAY 250 // Threshold between count
 #define LONG_PRESS_COUNT 4 // Threshold between  Short and Long push
 #define PARAM_RF_TIMEOUT 10000 // TimeOut for RF code detection (waiting for rf button push)
-#define N_RF_BUTTONS 6 // Number of buttons on remote control
+#define N_RF_BUTTONS 6 // Number of buttons on remote control ! CHANGE SEQ_MAX_SIZE ACCORDINGLY
 
 // On-Board button
 #define CONFIG_PIN 17 // pin to on-board button for config (A3)
 
 // Parameter for Sequencer
-#define SEQ_MAX_SIZE 329 // max number of actions
-#define TIME_OFFSET 2000
+#define SEQ_MAX_SIZE 300 // max 332 with 6 RF buttons
+#define TIME_OFFSET 1250 // time offset for sequence music sync
 
 // EEPROM addresses
-#define EE_ADDR_VOLUME 0  //1 byte allocated (DFPlayer volume)
+#define EE_ADDR_VOLUME 0  // 1 byte allocated (DFPlayer volume)
 #define EE_ADDR_EQUALIZER 1 // 1 byte alloc. (DFPlayer equalizer)
 #define EE_ADDR_RFCODES 2 // 4*N_RF_BUTTONS bytes alloc.
 #define EE_ADDR_SEQUENCE 2+4*N_RF_BUTTONS // up to 990 bytes
-
 
 // Declarations for Remote Control
 RCSwitch mySwitch = RCSwitch();
@@ -78,7 +77,6 @@ bool powerOn = false;
 
 // Other
 unsigned long timer;
-
 
 void setup() {
   
@@ -269,6 +267,7 @@ void loop() {
         track = 1;
         if (powerOn || dfPlay) powerOn = turnPowerOff();
         else {
+          turnPowerOff(); // reinit in case of external actions on BPs
           powerOn = turnPowerOn();
           if (dfConnected) {
             myDFPlayer.playMp3Folder(track);
@@ -293,8 +292,14 @@ void loop() {
           #ifdef DEBUG
             Serial.println(F("CONFIG_PIN is LOW > Record sequence"));
           #endif
-          recordSequence(EE_ADDR_SEQUENCE, (dfConnected && dfPlay)?track:0);
-          dfStopAfterTrack = false;
+          if (dfConnected && dfPlay) {
+            recordSequence(EE_ADDR_SEQUENCE, track);
+            dfStopAfterTrack = true;
+          }
+          else {
+            recordSequence(EE_ADDR_SEQUENCE, 0);
+            dfStopAfterTrack = false;
+          }
         }
         else {
           #ifdef DEBUG
@@ -329,6 +334,7 @@ void loop() {
               #ifdef DEBUG
                 Serial.println(F(" > Start music"));
               #endif
+              track = 1;
               myDFPlayer.playMp3Folder(track);
               delay(100);
               dfPlay = true;
@@ -342,7 +348,6 @@ void loop() {
             #ifdef DEBUG
               Serial.println(F("Long push on rf_button 3 detected : PREVIOUS TRACK (LOOP)"));
             #endif
-            //checkTrackNumber();
             (((track+=tracksNumber)-=2)%=tracksNumber)++;
             myDFPlayer.playMp3Folder(track);
             blinkLed(2,5);
@@ -351,11 +356,11 @@ void loop() {
 
           // NEXT TRACK (LOOP)
           if (rfCommand.code == rfParam.code[1]) {
+            (track%=tracksNumber)++;
             #ifdef DEBUG
               Serial.println(F("Long push on rf_button 2 detected : NEXT TRACK (LOOP)"));
+              Serial.print(F("MP3Folder_track = "));Serial.println(track);
             #endif
-            //checkTrackNumber();
-            (track%=tracksNumber)++;
             myDFPlayer.playMp3Folder(track);
             blinkLed(2,5);
             dfStopAfterTrack = false;
@@ -394,7 +399,6 @@ void loop() {
             #ifdef DEBUG
               Serial.println(F("Long push on rf_button 4 detected : ADVERTISE"));
             #endif
-            //checkTrackNumber();
             if (advertsNumber != 0) {
               if (dfPlay) {
                 #ifdef DEBUG
@@ -423,7 +427,7 @@ void loop() {
                 #ifndef DEBUG
                   myDFPlayer.play(random(1, advertsNumber+1));
                 #endif
-                // go back to sleep after playing
+                // stop after playing
                 blinkLed(2,5);
                 dfStopAfterTrack = true;
               }
@@ -476,15 +480,21 @@ void loop() {
         }
       }
       if (myDFPlayer.readType() == DFPlayerPlayFinished || forceNext) {
+        delay(100);
+        unsigned int readTrack = myDFPlayer.read();
         #ifdef DEBUG
-          Serial.println(F("Play Finished"));
+          Serial.print(F("Play Finished > readTrack = "));
+          Serial.println(readTrack);
         #endif
         // power off when track has finished (end of sequencer / advertiser while stop)
         if (dfStopAfterTrack) {
           #ifdef DEBUG
             Serial.println(F(" Stops after track"));
           #endif
-          powerOn = turnPowerOff();
+          myDFPlayer.stop();
+          delay(100);
+          dfPlay = false;
+          track = 1;
           dfStopAfterTrack = false;
           // avoid redundant play finish message
           while (myDFPlayer.available()) {
@@ -496,9 +506,8 @@ void loop() {
           }
         }
         else { // continue playing
-          if (myDFPlayer.read() == track + advertsNumber || forceNext) { //avoid redundant next at end of track
-            //checkTrackNumber();
-            if (track==tracksNumber) {
+          if (readTrack == track + advertsNumber || forceNext) { //avoid redundant next at end of track
+            if (track == tracksNumber) {
               #ifdef DEBUG
                 Serial.println(F("End of playlist > Stop playing"));
               #endif
@@ -513,8 +522,9 @@ void loop() {
               track++;
               while (tmp != track + advertsNumber) {
                 myDFPlayer.playMp3Folder(track);
-                delay(200);
+                delay(100);
                 tmp = myDFPlayer.readCurrentFileNumber();
+                delay(100);
                 #ifdef DEBUG
                   Serial.print(F(" > track = "));Serial.print(track);
                   Serial.print(F("   | current = "));Serial.println(tmp - advertsNumber);
@@ -637,21 +647,20 @@ RfCommandStr getRfCommand() {
       Serial.println(count);
     #endif
   }
-
   return rfCommand;
-  
 }
 
 // -- DFPlayer UTILS
 
-bool connectDFPlayer() {
+bool connectDFPlayer() {  
   track = 1;
-  #ifdef DEBUG
-    Serial.print(F("Initiating Communication with DFPlayer "));
-  #endif
   int count = 0;
   int temp;
   bool isValidNumber = false;
+
+  #ifdef DEBUG
+    Serial.print(F("Initiating Communication with DFPlayer "));
+  #endif
   mySoftwareSerial.end();
   delay(100);
   mySoftwareSerial.begin(9600);
@@ -789,7 +798,7 @@ bool connectDFPlayer() {
 }
 
 // -- SEQUENCE RECORDER
-void recordSequence(byte ADDR, unsigned int track) {
+void recordSequence(int ADDR, unsigned int track) {
 
   // RESET SEQUENCE MEMORY
   for (int i = ADDR; i < ADDR+2+3*SEQ_MAX_SIZE; i++) EEPROM.put(i,0x00);
@@ -800,24 +809,29 @@ void recordSequence(byte ADDR, unsigned int track) {
   EEPROM.put(ADDR, sequenceTrack);
   ADDR += 2; //sizeof(unsigned int)
   int index = 0;
-  unsigned long refTime = millis();
+  unsigned long refTime;
   unsigned long timing_ms;
   unsigned int timing;
   powerOn = turnPowerOff();
   blinkLed(3,10);
+  while(digitalRead(CONFIG_PIN)==LOW) delay(10);
   powerOn = turnPowerOn();
+  refTime = millis();
+  delay(1000);
   if (dfConnected && sequenceTrack!=0) myDFPlayer.playMp3Folder(sequenceTrack);
+  
   // ACQUISITION
   byte pinTriggered = -1; //same as 255 (means no pin triggered)
   while (index < SEQ_MAX_SIZE) {
     if (digitalRead(CONFIG_PIN) == LOW) break;
+    timing_ms = millis()-refTime;
+    if (timing_ms > 605000) break;
     for (byte i = 0; i < 6; i++) {
       if (digitalRead(buttonPin[i]) == LOW) { // button is active
         if (pinTriggered != i) { // and it is a trigger
           pinTriggered = i;
-          pushButton(i);
-          timing_ms = millis()-refTime;
-          timing = int(0.1*timing_ms); //ms > 0.01s
+          //pushButton(i);
+          timing = timing_ms / 10; //ms -> 0.01s
           EEPROM.put(ADDR, timing);
           ADDR+=2; //sizeof(unsigned int)
           EEPROM.put(ADDR, i);
@@ -826,10 +840,10 @@ void recordSequence(byte ADDR, unsigned int track) {
         }
       }
       else { // button is not active
-        if (pinTriggered == i) pinTriggered = -1; // it can be triggered again
+        if (pinTriggered == i) pinTriggered = -1; // it has been released
       }
     }
-    delay(max(DELAY_OUTPUT - 50, 50)); //delay decreased due to EEPROM write time
+    delay(50); //DELAY_OUTPUT - 50 due to EEPROM write time
   }
   blinkLed(10,5);
   #ifdef DEBUG
@@ -837,35 +851,37 @@ void recordSequence(byte ADDR, unsigned int track) {
   #endif
 }
 
-bool playSequence(byte ADDR) {
+bool playSequence(int ADDR) {
   
   unsigned long refTime;
   unsigned long timing_ms;
   unsigned int timing[SEQ_MAX_SIZE];
   byte pin[SEQ_MAX_SIZE];
+  bool stopSequence = false;
+  RfCommandStr command;
 
   powerOn = turnPowerOff();
 
   // recover sequence from EEPROM
   EEPROM.get(ADDR, track);
   ADDR += 2; //sizeof(unsigned int)
-  int index = 0;
-  EEPROM.get(ADDR, timing[index]);
+  EEPROM.get(ADDR, timing[0]);
   ADDR+=2;
-  EEPROM.get(ADDR, pin[index]);
+  EEPROM.get(ADDR, pin[0]);
   ADDR+=1;
-  while (index < SEQ_MAX_SIZE && timing[index] != 0) {
-    index++;
+  int index = 1;
+  while (index < SEQ_MAX_SIZE && timing[index-1] != 0) {
     EEPROM.get(ADDR, timing[index]);
     ADDR+=2; //sizeof(unsigned int)
     EEPROM.get(ADDR, pin[index]);
     ADDR+=1; //sizeof(byte)
+    index++;
   }
 
   #ifdef DEBUG
     Serial.println("F(SEQUENCE READ FROM EEPROM)");
     Serial.print(F(" - Track number: ")); Serial.println(track);
-    Serial.print(F(" - Number of actions: ")); Serial.println(index+1);
+    Serial.print(F(" - Number of actions: ")); Serial.println(index);
     Serial.println(F(" - Actions table (timing [ms], pin):"));
     for (int i = 0; i < index; i++) {
       Serial.print("\t");Serial.print(timing[i]);
@@ -888,24 +904,33 @@ bool playSequence(byte ADDR) {
   refTime -= TIME_OFFSET;
   
   #ifdef DEBUG
-      Serial.println("ref Time = " + String(refTime));
-    #endif
+    Serial.println(" ** ref Time = " + String(refTime));
+  #endif
+  
   for (int i = 0; i < index; i++) {
-    timing_ms = 10*timing[i];
-    while(millis()-refTime < timing_ms) {
-      delay(DELAY_OUTPUT);
-    }
+    timing_ms = timing[i];
+    timing_ms *= 10;
     #ifdef DEBUG
-      Serial.println(timing[i]);
+      Serial.print(F(" > timing_ms = "));Serial.println(timing_ms);
     #endif
+    while(millis()-refTime < timing_ms) {
+      command = getRfCommand();
+      if (command.code == rfParam.code[5] && command.longPush == true) {
+        #ifdef DEBUG
+          Serial.println(F(" > Sequence stopped"));
+        #endif
+        stopSequence = true;
+        break;
+      }
+    }
+    if (stopSequence) break;
     pushButton(pin[i]);
   }
   #ifdef DEBUG
     Serial.println(F("END OF SEQUENCE"));
   #endif
-
+  if (stopSequence) powerOn = turnPowerOff();
   return dfPlay;
-  
 }
 
 #ifdef DEBUG
