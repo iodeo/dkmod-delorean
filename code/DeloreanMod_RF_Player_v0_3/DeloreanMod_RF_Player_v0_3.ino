@@ -877,6 +877,7 @@ bool playSequence(int ADDR) {
     ADDR+=1; //sizeof(byte)
     index++;
   }
+  index--;
 
   #ifdef DEBUG
     Serial.println("F(SEQUENCE READ FROM EEPROM)");
