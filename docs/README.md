@@ -4,7 +4,7 @@
 
 ## Our principles in Extension boards design
 
-Our extension boards are designed to respect the following rules:
+Our extension boards are designed with the following rules:
 
 1. Fit in existing model perfectly
 
@@ -33,16 +33,18 @@ Some optional extras may be added such as:
 This board is an extension to the RF Controller that integrates a MP3 player.
 Being so enthousiastic about embedding music player in the model, a bunch of functionalities have been developped in the board software. Today, the functionalities are:
 
-1. Play music from a playlist
-2. Navigate in the playlist
-3. Change volume
-4. Change equalizer
-5. Advertise randomly from another playlist (so cool to play your favourite sentences from the movie)
+1. Command the 6 buttons separately
+2. Powering on/off all the devices
+3. Play music from MP3 playlist
+4. Navigate in MP3 playlist
+5. Advertise randomly from ADVERT playlist (so cool to play your favourite sentences from the movie)
 6. Record / Play a sequence of commands timely on a music track
-7. Powering on/off all the devices
+7. Change volume
+8. Change equalizer
+
 
 This board is like the ultimate one !
-But yeah, there's a drawback: Since the original 3xAA battery leads to ridiculous autonomy, this extension board requires a well regulated 5V 2A minimum power supply to work correctly. This is mainly due to the onboard 3w audio amplifier. A cheap and reliable option is to use a 12V 2A power supply regulated down to 5V using a good buck DC-DC converter.
+But yeah, there's a drawback: Since the original 3xAA battery leads to ridiculous autonomy, this extension board requires a well regulated 5V 2A minimum power supply to work correctly. This is mainly due to the onboard 3w audio amplifier.
 
 Ressources:
 - [user manual ENG](https://github.com/henrio-net/dkmod-delorean/blob/master/docs/Delorean%20RF%20Player%20-%20User%20Manual%20v1.pdf)
