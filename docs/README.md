@@ -56,5 +56,5 @@ We are BTTF fan and technology enthousiast and mixing those two passions has bee
 Hopefully we will find the time to work again on such projects.
 For any information or any personnal request, feel free to contact us !
 
-Contact: [dkmod@techie.com](mailto:dkmod@techie.com)
-
+Facebook page: [facebook.com/dkmod.officiel](facebook.me/dkmod.officiel)
+Contact us: [m.me/dkmod.officiel](m.me/dkmod.officiel)
