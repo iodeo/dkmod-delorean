@@ -27,6 +27,11 @@ Some optional extras may be added such as:
 - Adding a command to control the 6 buttons in a row
 - Adding a sequencer
 
+Resources:
+- [manuel utilisateur / user manual](url)
+- [code source](url)
+- [guide pour utilisateur Arduino](url)
+
 
 ### Delorean RF Player
 
