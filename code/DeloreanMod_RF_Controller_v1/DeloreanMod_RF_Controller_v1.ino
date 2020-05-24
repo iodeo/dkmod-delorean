@@ -1,5 +1,5 @@
 /*
- * Sketch to be used within Delorean_RF_Player v0.3 hardware from dkMOD
+ * Sketch to be used within Delorean_RF_Controller v1 hardware from dkMOD
  * Free software under GNU v3 License
  * Copyright henrio-net, 2020
  */
