@@ -1,4 +1,4 @@
-# Delorean Mods on Electronic devices control
+# Electronics for Eaglemoss Models
 
 [![Build Status](https://travis-ci.org/pages-themes/minimal.svg?branch=master)](https://travis-ci.org/pages-themes/minimal) 
 
@@ -60,7 +60,7 @@ Ressources:
 
 
 # About dkMOD
-We are BTTF fan and technology enthousiast and mixing those two passions has been really great.
+We are BTTF fan and technology enthousiast and mixing those two passions is really great.
 Hopefully we will find the time to work again on such projects.
 For any information or any personnal request, feel free to contact us !
 
