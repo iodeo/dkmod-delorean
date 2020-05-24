@@ -28,9 +28,10 @@ Some optional extras may be added such as:
 - Adding a sequencer
 
 Resources:
-- [manuel utilisateur / user manual](url)
-- [code source](url)
-- [guide pour utilisateur Arduino](url)
+- [manuel utilisateur / user manual](https://github.com/henrio-net/dkmod-delorean/blob/master/docs/Delorean%20RF%20Controller%20-%20Manuel%20Utilisateur.pdf)
+- [guide pour utilisateur Arduino](https://github.com/henrio-net/dkmod-delorean/blob/master/docs/Delorean%20RF%20Controller%20-%20Utilisateur%20Arduino.pdf)
+- [code source](https://github.com/henrio-net/dkmod-delorean/blob/master/code)
+
 
 
 ### Delorean RF Player
