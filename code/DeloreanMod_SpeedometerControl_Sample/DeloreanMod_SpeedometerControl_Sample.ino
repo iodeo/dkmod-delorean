@@ -15,7 +15,6 @@ void setup() {
   delay(5000); // delay is only for sample code
   
 }
-sp
 
 void loop() {
 
