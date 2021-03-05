@@ -6,7 +6,7 @@
 // comment out below to disable SYNC
 #define SYNC PIN_PB5
 
-// Segment i is lit only if ((anodePins[i] == HIGH) && (cathodePins[i] == LOW))
+// Segment i is lit when ((anodePins[i] == HIGH) && (cathodePins[i] == LOW))
 const byte anodePins[15] = {
   // Digit 1 : a, b, c, d, e, f, g
   PIN_PB4, PIN_PB2, PIN_PB2, PIN_PB1, PIN_PB3, PIN_PB3, PIN_PB4,
@@ -84,8 +84,8 @@ void setup() {
  *  Global variables for main loop
  */
 
-unsigned long timer; // use for state timing
-unsigned long timeout; // use for state timing
+unsigned long timer; // use for final state delay
+unsigned long timeout; // use for state management
 unsigned long refreshTimer = 0; // use for speed update timing
 
 bool timeoutFlag = false; // various timeout event
@@ -115,23 +115,18 @@ void loop() {
   }
   if (state == SPEED_UP) {
 #ifdef SYNC    
-    if (timeoutFlag) {
-      timeoutFlag = false;
-      state = SLOW_0MPH;
-    }
     if (digitalRead(SYNC) == HIGH) {
       state = FINAL_88MPH;
       timer = millis();
       timeout = timer;
     }
-#else
+#endif
     if (timeoutFlag) {
       timeoutFlag = false;
       state = FINAL_88MPH;
       timer = millis();
       timeout = timer;
     }
-#endif
   }
   if (state == FINAL_88MPH) {
     if (timeoutFlag) {
@@ -174,8 +169,6 @@ void loop() {
         timeoutFlag = true;
       }
     }
-#else
-    if (false) {}
 #endif
     // wait given time after end of pulse
     else {
@@ -254,7 +247,7 @@ void loop() {
         break;
       default:
         //error state
-        vitesse = 99;
+        vitesse = 9900;
         break;
     }
   }
@@ -270,32 +263,37 @@ void loop() {
 
 void displaySpeed(unsigned int vitesse) {
   vitesse /= 100;
-  if (vitesse > 99) vitesse = 9900;
-  byte d1 = vitesse / 10;
-  byte d2 = vitesse % 10;
-  displayDigits(d1, d2);
-
+  if (vitesse > 99) vitesse = 99;
+  displayDigit1(vitesse / 10); // display tens
+  displayDigit2(vitesse % 10); // display units
+#ifdef DOT_DISPLAY
+  blinkSegment(14);
+#endif
 }
 
-void displayDigits(byte digit1, byte digit2) {
-  for (int i = 0; i < 14; i++) {
-    if (i < 7) blinkSegment(i, (digit[digit1] & (0b1000000 >> i)));
-    else blinkSegment(i, (digit[digit2] & (0b1000000 >> i-7)));
+void displayDigit1(byte digit1) {
+  for (byte i = 0; i < 7; i++) {
+    if (digit1 > 0) { // zero not displayed on tens
+      if (digit[digit1] & (0b1000000 >> i)) blinkSegment(i);
+      else delayMicroseconds(SWEEP_TIME); // preserve display frequency
+    }
+    else delayMicroseconds(SWEEP_TIME);
   }
-  blinkSegment(14, DOT_DISPLAY);
 }
 
-void blinkSegment(byte i, bool active) {
-  if (active) {
-    pinMode(anodePins[i], OUTPUT);
-    pinMode(cathodePins[i], OUTPUT);
-    digitalWrite(anodePins[i], HIGH);
-    digitalWrite(cathodePins[i], LOW);
-    delayMicroseconds(SWEEP_TIME);
-    pinMode(anodePins[i], INPUT);
-    pinMode(cathodePins[i], INPUT);
+void displayDigit2(byte digit2) {
+  for (byte i = 0; i < 7; i++) {
+    if (digit[digit2] & (0b1000000 >> i)) blinkSegment(i + 7);
+    else delayMicroseconds(SWEEP_TIME); // preserve display frequency
   }
-  else {
-    delayMicroseconds(SWEEP_TIME);  
-  }
+}
+
+void blinkSegment(byte i) {
+  pinMode(anodePins[i], OUTPUT);
+  pinMode(cathodePins[i], OUTPUT);
+  digitalWrite(anodePins[i], HIGH);
+  digitalWrite(cathodePins[i], LOW);
+  delayMicroseconds(SWEEP_TIME);
+  pinMode(anodePins[i], INPUT);
+  pinMode(cathodePins[i], INPUT);
 }
