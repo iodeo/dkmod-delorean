@@ -1,18 +1,5 @@
 # Electronics for Eaglemoss Models
 
-## Our principles in Extension boards design
-
-Our extension boards are designed with the following rules:
-
-1. Fit in Eaglemoss model perfectly
-
-2. Be plug and play
-
-3. Be end-user friendly (not only for programmer)
-
-4. Be open source and customisable
-
-
 ## Delorean RF Controller
 
 This board enables remote control of the 6 switchbox buttons.
