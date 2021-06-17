@@ -1,4 +1,3 @@
 # dkmod-delorean
 
-Project webpage : 
-https://iodeo.github.io/dkmod-delorean
+Open source softwares for dkmod BTTF 1:8 scale mods
